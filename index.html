@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>4-Image Camera Composer</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>4-Image Camera Composer</h1>
+        
+        <div id="camera-container">
+            <video id="camera" autoplay playsinline></video>
+            <div id="guide-overlay">
+                <div class="guide-text">Position 1: Top Left</div>
+            </div>
+            <canvas id="canvas" style="display: none;"></canvas>
+            
+            <div id="capture-indicators">
+                <div class="indicator" id="indicator-1"></div>
+                <div class="indicator" id="indicator-2"></div>
+                <div class="indicator" id="indicator-3"></div>
+                <div class="indicator" id="indicator-4"></div>
+            </div>
+        </div>
+        
+        <div class="controls">
+            <button id="capture-btn">Capture</button>
+            <button id="reset-btn">Reset</button>
+            <button id="combine-btn" disabled>Combine Images</button>
+        </div>
+        
+        <div id="preview-container">
+            <div class="preview-box" id="preview-1"></div>
+            <div class="preview-box" id="preview-2"></div>
+            <div class="preview-box" id="preview-3"></div>
+            <div class="preview-box" id="preview-4"></div>
+        </div>
+        
+        <div id="result-container">
+            <h2>Final Composition</h2>
+            <div id="final-image"></div>
+            <button id="download-btn" style="display: none;">Download Image</button>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
