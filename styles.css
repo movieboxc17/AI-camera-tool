@@ -1,493 +1,566 @@
-:root {
-    --primary-color: #3498db;
-    --primary-dark: #2980b9;
-    --secondary-color: #e74c3c;
-    --secondary-dark: #c0392b;
-    --text-color: #2c3e50;
-    --light-gray: #ecf0f1;
-    --dark-gray: #7f8c8d;
-    --white: #ffffff;
-    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    --transition: all 0.3s ease;
-    --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-
-body {
-    font-family: var(--font-family);
-    color: var(--text-color);
-    background-color: #f8f9fa;
-    line-height: 1.6;
-    height: 100vh;
-    overflow: hidden;
-}
-
-.app-container {
-    max-width: 100%;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    position: relative;
-}
-
-header {
-    background-color: var(--primary-color);
-    color: var(--white);
-    padding: 15px;
-    text-align: center;
-    box-shadow: var(--shadow);
-    position: relative;
-    z-index: 10;
-}
-
-header h1 {
-    font-size: 1.5rem;
-    font-weight: 500;
-}
-
-main {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    overflow-y: auto;
-}
-
-#loading-screen {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0,0,0,0.8);
-    display: none;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    z-index: 9999;
-}
-
-#loading-screen p {
-    color: white;
-    margin-top: 15px;
-    font-size: 1.2rem;
-}
-
-.spinner {
-    width: 50px;
-    height: 50px;
-    border: 5px solid rgba(255,255,255,0.3);
-    border-radius: 50%;
-    border-top-color: white;
-    animation: spin 1s ease-in-out infinite;
-}
-
-@keyframes spin {
-    to { transform: rotate(360deg); }
-}
-
-/* Camera Section */
-#camera-view {
-    flex: 1;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-}
-
-#camera-container {
-    flex: 1;
-    position: relative;
-    overflow: hidden;
-    background-color: #000;
-}
-
-#camera {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transform: scaleX(-1); /* Mirror for selfie mode */
-}
-
-#guide-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    pointer-events: none;
-}
-
-.overlay-grid {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.target-area {
-    width: 70%;
-    height: 70%;
-    border: 2px dashed rgba(255, 255, 255, 0.7);
-    border-radius: 8px;
-    box-shadow: 0 0 0 2000px rgba(0, 0, 0, 0.3);
-    animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-    0% {
-        box-shadow: 0 0 0 2000px rgba(0, 0, 0, 0.3);
-    }
-    50% {
-        box-shadow: 0 0 0 2000px rgba(0, 0, 0, 0.5);
-    }
-    100% {
-        box-shadow: 0 0 0 2000px rgba(0, 0, 0, 0.3);
-    }
-}
-
-.guide-instructions {
-    background-color: rgba(0, 0, 0, 0.6);
-    padding: 15px;
-    text-align: center;
-}
-
-.guide-text {
-    color: var(--white);
-    font-size: 1.2rem;
-    font-weight: bold;
-    margin-bottom: 5px;
-}
-
-.guide-details {
-    color: var(--light-gray);
-    font-size: 0.9rem;
-}
-
-#capture-indicators {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-.indicator {
-    width: 35px;
-    height: 35px;
-    border-radius: 50%;
-    background-color: rgba(0, 0, 0, 0.6);
-    color: var(--white);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-weight: bold;
-    border: 2px solid var(--white);
-}
-
-.indicator.active {
-    background-color: var(--primary-color);
-}
-
-.indicator.completed {
-    background-color: var(--primary-dark);
-}
-
-.camera-controls {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    padding: 15px;
-    background-color: #2c3e50;
-}
-
-.round-btn {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    background-color: rgba(255, 255, 255, 0.2);
-    border: none;
-    color: var(--white);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    font-size: 1.2rem;
-    transition: var(--transition);
-}
-
-.round-btn:hover, .round-btn:focus {
-    background-color: rgba(255, 255, 255, 0.3);
-}
-
-.capture-btn {
-    width: 70px;
-    height: 70px;
-    border-radius: 50%;
-    background-color: var(--secondary-color);
-    border: 4px solid var(--white);
-    color: var(--white);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    font-size: 1.5rem;
-    transition: var(--transition);
-}
-
-.capture-btn:hover, .capture-btn:focus {
-    background-color: var(--secondary-dark);
-    transform: scale(1.05);
-}
-
-#camera-settings-panel {
-    background-color: rgba(44, 62, 80, 0.95);
-    padding: 15px;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    transition: var(--transition);
-}
-
-.setting-group {
-    margin-bottom: 15px;
-}
-
-.setting-group label {
-    display: block;
-    color: var(--white);
-    margin-bottom: 5px;
-    font-size: 0.9rem;
-}
-
-.setting-group input[type="range"] {
-    width: 100%;
-    background-color: rgba(255, 255, 255, 0.2);
-    accent-color: var(--primary-color);
-}
-
-.filter-options {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-}
-
-.filter-btn {
-    background-color: rgba(255, 255, 255, 0.1);
-    border: none;
-    color: var(--white);
-    padding: 8px 12px;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: var(--transition);
-}
-
-.filter-btn.active {
-    background-color: var(--primary-color);
-}
-
-/* Preview Section */
-#preview-section {
-    padding: 20px;
-    background-color: var(--white);
-}
-
-h2 {
-    margin-bottom: 15px;
-    font-size: 1.3rem;
-    color: var(--text-color);
-    font-weight: 500;
-}
-
-#preview-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-gap: 15px;
-    margin-bottom: 20px;
-}
-
-.preview-box {
-    position: relative;
-    border-radius: 8px;
-    height: 150px;
-    overflow: hidden;
-    background-color: var(--light-gray);
-    background-size: cover;
-    background-position: center;
-    box-shadow: var(--shadow);
-    transition: var(--transition);
-}
-
-.preview-box:hover {
-    transform: scale(1.02);
-}
-
-.preview-placeholder {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 2rem;
-    color: var(--dark-gray);
-    background-color: var(--light-gray);
-}
-
-.action-buttons {
-    display: flex;
-    justify-content: space-between;
-    gap: 15px;
-}
-
-.primary-btn, .secondary-btn {
-    flex: 1;
-    padding: 12px 15px;
-    border: none;
-    border-radius: 6px;
-    font-size: 1rem;
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
-    transition: var(--transition);
-}
-
-.primary-btn {
-    background-color: var(--primary-color);
-    color: var(--white);
-}
-
-.primary-btn:hover, .primary-btn:focus {
-    background-color: var(--primary-dark);
-}
-
-.secondary-btn {
-    background-color: var(--light-gray);
-    color: var(--text-color);
-}
-
-.secondary-btn:hover, .secondary-btn:focus {
-    background-color: #d5dbdb;
-}
-
-.primary-btn:disabled {
-    background-color: var(--dark-gray);
-    cursor: not-allowed;
-}
-
-/* Result Section */
-#result-section {
-    padding: 20px;
-    background-color: var(--white);
-}
-
-.composition-controls {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-    margin-bottom: 20px;
-    padding: 15px;
-    background-color: var(--light-gray);
-    border-radius: 8px;
-}
-
-select, input[type="range"], input[type="color"] {
-    padding: 8px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    background-color: var(--white);
-}
-
-.border-control {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-#final-image-container {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    margin: 20px 0;
-}
-
-#final-image {
-    width: 100%;
-    height: 300px;
-    max-width: 500px;
-    background-color: var(--light-gray);
-    border-radius: 8px;
-    box-shadow: var(--shadow);
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-}
-
-/* Utility Classes */
-.hidden {
-    display: none;
-}
-
-#orientation-message {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: var(--primary-color);
-    color: var(--white);
-    display: none;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-    z-index: 9999;
-    text-align: center;
-}
-
-#orientation-message i {
-    font-size: 2rem;
-    margin-top: 20px;
-}
-
-/* Media Queries */
-@media screen and (min-width: 768px) {
-    main {
-        flex-direction: row;
+document.addEventListener('DOMContentLoaded', () => {
+    // DOM Elements
+    const cameraElement = document.getElementById('camera');
+    const canvasElement = document.getElementById('canvas');
+    const captureBtn = document.getElementById('capture-btn');
+    const resetBtn = document.getElementById('reset-btn');
+    const combineBtn = document.getElementById('combine-btn');
+    const downloadBtn = document.getElementById('download-btn');
+    const shareBtn = document.getElementById('share-btn');
+    const switchCameraBtn = document.getElementById('switch-camera-btn');
+    const settingsBtn = document.getElementById('settings-btn');
+    const cameraSettingsPanel = document.getElementById('camera-settings-panel');
+    const backBtn = document.getElementById('back-btn');
+    const guideText = document.querySelector('.guide-text');
+    const guideDetails = document.querySelector('.guide-details');
+    const previewSection = document.getElementById('preview-section');
+    const resultSection = document.getElementById('result-section');
+    const finalImage = document.getElementById('final-image');
+    const compositionStyle = document.getElementById('composition-style');
+    const borderWidth = document.getElementById('border-width');
+    const borderColor = document.getElementById('border-color');
+    const loadingScreen = document.getElementById('loading-screen');
+    
+    // Camera filter and adjustment controls
+    const brightnessControl = document.getElementById('brightness');
+    const contrastControl = document.getElementById('contrast');
+    const saturationControl = document.getElementById('saturation');
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    
+    // State variables
+    let currentImageIndex = 0;
+    const maxImages = 4;
+    const capturedImages = [];
+    let stream = null;
+    let facingMode = "user"; // Start with front camera
+    let currentFilter = "none";
+    
+    // Camera constraints
+    let constraints = {
+        video: { 
+            facingMode: facingMode,
+            width: { ideal: 1920 },
+            height: { ideal: 1080 }
+        },
+        audio: false
+    };
+    
+    // Position guidance
+    const positions = [
+        {
+            text: "Position 1: Top Left",
+            details: "Capture the top left portion of your object"
+        },
+        {
+            text: "Position 2: Top Right",
+            details: "Now move to capture the top right portion"
+        },
+        {
+            text: "Position 3: Bottom Left",
+            details: "Capture the bottom left of your object"
+        },
+        {
+            text: "Position 4: Bottom Right",
+            details: "Finally, capture the bottom right to complete"
+        }
+    ];
+    
+    // Start camera
+    async function startCamera() {
+        try {
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+            }
+            
+            stream = await navigator.mediaDevices.getUserMedia(constraints);
+            cameraElement.srcObject = stream;
+            await cameraElement.play();
+            
+            // Adjust canvas size after camera is initialized
+            canvasElement.width = cameraElement.videoWidth;
+            canvasElement.height = cameraElement.videoHeight;
+            
+            // Apply current filter and adjustments
+            applyFilterAndAdjustments();
+        } catch (err) {
+            console.error("Error accessing camera:", err);
+            alert("Error accessing camera. Please make sure you've granted camera permissions.");
+        }
     }
     
-    #camera-view {
-        width: 60%;
+    // Switch between front and back cameras
+    function switchCamera() {
+        facingMode = facingMode === "user" ? "environment" : "user";
+        constraints.video.facingMode = facingMode;
+        
+        // Update camera
+        startCamera();
     }
     
-    #preview-section, #result-section {
-        width: 40%;
-        overflow-y: auto;
-        max-height: calc(100vh - 60px);
+    // Apply visual filters and adjustments to the camera feed
+    function applyFilterAndAdjustments() {
+        const brightnessValue = brightnessControl.value;
+        const contrastValue = contrastControl.value;
+        const saturationValue = saturationControl.value;
+        
+        let filterString = `brightness(${100 + parseInt(brightnessValue)}%) `;
+        filterString += `contrast(${100 + parseInt(contrastValue)}%) `;
+        filterString += `saturate(${100 + parseInt(saturationValue)}%) `;
+        
+        // Add selected filter effect
+        switch (currentFilter) {
+            case "grayscale":
+                filterString += "grayscale(100%)";
+                break;
+            case "sepia":
+                filterString += "sepia(80%)";
+                break;
+            case "vintage":
+                filterString += "sepia(50%) contrast(85%) brightness(90%) saturate(85%)";
+                break;
+            case "none":
+            default:
+                // No additional filter
+                break;
+        }
+        
+        cameraElement.style.filter = filterString;
     }
     
-    #preview-container {
-        grid-template-columns: 1fr 1fr;
+    // Initialize the app
+    function init() {
+        startCamera();
+        updateUI();
+        
+        // Set up filter adjustments
+        brightnessControl.addEventListener('input', applyFilterAndAdjustments);
+        contrastControl.addEventListener('input', applyFilterAndAdjustments);
+        saturationControl.addEventListener('input', applyFilterAndAdjustments);
+        
+        filterButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Remove active class from all buttons
+                filterButtons.forEach(b => b.classList.remove('active'));
+                
+                // Add active class to clicked button
+                btn.classList.add('active');
+                
+                // Update current filter
+                currentFilter = btn.dataset.filter;
+                
+                // Apply the new filter
+                applyFilterAndAdjustments();
+            });
+        });
     }
-}
-
-@media screen and (max-width: 767px) and (orientation: portrait) {
-    #camera-container {
-        height: 50vh;
+    
+    // Update UI based on current state
+    function updateUI() {
+        // Update guidance text
+        if (currentImageIndex < maxImages) {
+            guideText.textContent = positions[currentImageIndex].text;
+            guideDetails.textContent = positions[currentImageIndex].details;
+        }
+        
+        // Update indicators
+        document.querySelectorAll('.indicator').forEach((indicator, index) => {
+            indicator.classList.remove('active', 'completed');
+            
+            if (index === currentImageIndex) {
+                indicator.classList.add('active');
+            } else if (index < currentImageIndex) {
+                indicator.classList.add('completed');
+            }
+        });
+        
+        // Enable/disable combine button
+        combineBtn.disabled = currentImageIndex < maxImages;
     }
-}
-
-@media screen and (max-width: 767px) and (orientation: landscape) {
-    #orientation-message {
-        display: flex;
+    
+    // Capture image with enhanced processing
+    function captureImage() {
+        if (currentImageIndex >= maxImages) return;
+        
+        showLoading();
+        
+        setTimeout(() => {
+            const context = canvasElement.getContext('2d');
+            
+            // Set canvas dimensions to match video
+            canvasElement.width = cameraElement.videoWidth;
+            canvasElement.height = cameraElement.videoHeight;
+            
+            // Draw the current frame from the video
+            context.filter = cameraElement.style.filter; // Apply the same filters to the canvas
+            
+            // Mirror the image if using front camera
+            if (facingMode === "user") {
+                context.translate(canvasElement.width, 0);
+                context.scale(-1, 1);
+            }
+            
+            context.drawImage(cameraElement, 0, 0, canvasElement.width, canvasElement.height);
+            
+            // Reset transformation matrix if needed
+            if (facingMode === "user") {
+                context.setTransform(1, 0, 0, 1, 0, 0);
+            }
+            
+            // Apply some image enhancement
+            enhanceImage(context, canvasElement.width, canvasElement.height);
+            
+            // Get the image data as a data URL
+            const imageData = canvasElement.toDataURL('image/png');
+            capturedImages[currentImageIndex] = imageData;
+            
+            // Display in preview
+            const previewBox = document.getElementById(`preview-${currentImageIndex + 1}`);
+            previewBox.style.backgroundImage = `url(${imageData})`;
+            
+            // Remove placeholder
+            const placeholder = previewBox.querySelector('.preview-placeholder');
+            if (placeholder) {
+                placeholder.style.display = 'none';
+            }
+            
+            // Move to next image
+            currentImageIndex++;
+            
+            // Update UI
+            updateUI();
+            
+            hideLoading();
+        }, 500); // Small delay to show loading screen
     }
-}
+    
+    // Enhance the captured image
+    function enhanceImage(context, width, height) {
+        // This is a basic enhancement - in a real app you might use more sophisticated processing
+        // Adjust levels automatically for better contrast
+        const imageData = context.getImageData(0, 0, width, height);
+        const data = imageData.data;
+        
+        // Find min and max values for auto levels
+        let min = 255, max = 0;
+        for (let i = 0; i < data.length; i += 4) {
+            const r = data[i];
+            const g = data[i + 1];
+            const b = data[i + 2];
+            const value = (r + g + b) / 3;
+            
+            if (value < min) min = value;
+            if (value > max) max = value;
+        }
+        
+        // Apply auto levels adjustment
+        const range = max - min;
+        if (range > 0) {
+            for (let i = 0; i < data.length; i += 4) {
+                data[i] = ((data[i] - min) / range) * 255;     // Red
+                data[i + 1] = ((data[i + 1] - min) / range) * 255; // Green
+                data[i + 2] = ((data[i + 2] - min) / range) * 255; // Blue
+            }
+        }
+        
+        // Apply slight sharpening
+        const sharpenKernel = [
+            0, -1, 0,
+            -1, 5, -1,
+            0, -1, 0
+        ];
+        
+        applyConvolution(data, width, height, sharpenKernel);
+        
+        // Put the modified data back
+        context.putImageData(imageData, 0, 0);
+    }
+    
+    // Apply convolution filter (for sharpening, blurring, etc.)
+    function applyConvolution(data, width, height, kernel) {
+        const side = Math.round(Math.sqrt(kernel.length));
+        const halfSide = Math.floor(side/2);
+        const tempData = new Uint8ClampedArray(data.length);
+        
+        // Copy original data to temp array
+        for (let i = 0; i < data.length; i++) {
+            tempData[i] = data[i];
+        }
+        
+        for (let y = 0; y < height; y++) {
+            for (let x = 0; x < width; x++) {
+                const px = (y * width + x) * 4; // pixel index
+                let r = 0, g = 0, b = 0;
+                
+                // Apply convolution
+                for (let cy = 0; cy < side; cy++) {
+                    for (let cx = 0; cx < side; cx++) {
+                        const scy = y + cy - halfSide;
+                        const scx = x + cx - halfSide;
+                        
+                        if (scy >= 0 && scy < height && scx >= 0 && scx < width) {
+                            const spx = (scy * width + scx) * 4;
+                            const kernelValue = kernel[cy * side + cx];
+                            
+                            r += tempData[spx] * kernelValue;
+                            g += tempData[spx + 1] * kernelValue;
+                            b += tempData[spx + 2] * kernelValue;
+                        }
+                    }
+                }
+                
+                // Set the new pixel values, ensuring they're within 0-255
+                data[px] = Math.min(255, Math.max(0, r));
+                data[px + 1] = Math.min(255, Math.max(0, g));
+                data[px + 2] = Math.min(255, Math.max(0, b));
+                // Alpha stays the same
+            }
+        }
+    }
+    
+    // Combine images into a single composition with selected style
+    function combineImages() {
+        showLoading();
+        
+        setTimeout(() => {
+            const resultCanvas = document.createElement('canvas');
+            const ctx = resultCanvas.getContext('2d');
+            
+            // Get selected composition style
+            const style = compositionStyle.value;
+            const border = parseInt(borderWidth.value);
+            const borderColorValue = borderColor.value;
+            
+            // Load all images
+            const imagePromises = capturedImages.map(src => {
+                return new Promise((resolve) => {
+                    const img = new Image();
+                    img.onload = () => resolve(img);
+                    img.src = src;
+                });
+            });
+            
+            // When all images are loaded, create the composition
+            Promise.all(imagePromises).then(loadedImages => {
+                // Get dimensions from first image
+                const imgWidth = loadedImages[0].width;
+                const imgHeight = loadedImages[0].height;
+                
+                // Set canvas size based on composition style
+                switch(style) {
+                    case 'horizontal':
+                        resultCanvas.width = imgWidth * 4 + border * 5;
+                        resultCanvas.height = imgHeight + border * 2;
+                        break;
+                    case 'vertical':
+                        resultCanvas.width = imgWidth + border * 2;
+                        resultCanvas.height = imgHeight * 4 + border * 5;
+                        break;
+                    case 'collage':
+                        resultCanvas.width = imgWidth * 2 + border * 3;
+                        resultCanvas.height = imgHeight * 2 + border * 3;
+                        break;
+                    case 'grid':
+                    default:
+                        resultCanvas.width = imgWidth * 2 + border * 3;
+                        resultCanvas.height = imgHeight * 2 + border * 3;
+                }
+                
+                // Fill background with border color
+                ctx.fillStyle = borderColorValue;
+                ctx.fillRect(0, 0, resultCanvas.width, resultCanvas.height);
+                
+                // Draw images based on composition style
+                switch(style) {
+                    case 'horizontal':
+                        // Draw images in a horizontal row
+                        for (let i = 0; i < 4; i++) {
+                            ctx.drawImage(
+                                loadedImages[i], 
+                                border + i * (imgWidth + border), 
+                                border, 
+                                imgWidth, 
+                                imgHeight
+                            );
+                        }
+                        break;
+                        
+                    case 'vertical':
+                        // Draw images in a vertical column
+                        for (let i = 0; i < 4; i++) {
+                            ctx.drawImage(
+                                loadedImages[i], 
+                                border, 
+                                border + i * (imgHeight + border), 
+                                imgWidth, 
+                                imgHeight
+                            );
+                        }
+                        break;
+                        
+                    case 'collage':
+                        // Draw images in a slightly overlapping collage
+                        const overlap = 20;
+                        const angle = 5 * Math.PI / 180; // 5 degrees in radians
+                        
+                        // Draw each image with a slight rotation
+                        ctx.save();
+                        ctx.translate(border + imgWidth/2, border + imgHeight/2);
+                        ctx.rotate(-angle);
+                        ctx.drawImage(loadedImages[0], -imgWidth/2, -imgHeight/2, imgWidth, imgHeight);
+                        ctx.restore();
+                        
+                        ctx.save();
+                        ctx.translate(border + imgWidth + border/2 + imgWidth/2, border + imgHeight/2);
+                        ctx.rotate(angle);
+                        ctx.drawImage(loadedImages[1], -imgWidth/2, -imgHeight/2, imgWidth, imgHeight);
+                        ctx.restore();
+                        
+                        ctx.save();
+                        ctx.translate(border + imgWidth/2, border + imgHeight + border/2 + imgHeight/2);
+                        ctx.rotate(angle);
+                        ctx.drawImage(loadedImages[2], -imgWidth/2, -imgHeight/2, imgWidth, imgHeight);
+                        ctx.restore();
+                        
+                        ctx.save();
+                        ctx.translate(border + imgWidth + border/2 + imgWidth/2, border + imgHeight + border/2 + imgHeight/2);
+                        ctx.rotate(-angle);
+                        ctx.drawImage(loadedImages[3], -imgWidth/2, -imgHeight/2, imgWidth, imgHeight);
+                        ctx.restore();
+                        break;
+                        
+                    case 'grid':
+                    default:
+                        // Draw images in a 2x2 grid (default)
+                        ctx.drawImage(loadedImages[0], border, border, imgWidth, imgHeight);
+                        ctx.drawImage(loadedImages[1], border * 2 + imgWidth, border, imgWidth, imgHeight);
+                        ctx.drawImage(loadedImages[2], border, border * 2 + imgHeight, imgWidth, imgHeight);
+                        ctx.drawImage(loadedImages[3], border * 2 + imgWidth, border * 2 + imgHeight, imgWidth, imgHeight);
+                }
+                
+                // Display the final image
+                const resultImageData = resultCanvas.toDataURL('image/png');
+                finalImage.style.backgroundImage = `url(${resultImageData})`;
+                
+                // Show the result section
+                previewSection.classList.add('hidden');
+                resultSection.classList.remove('hidden');
+                
+                // Set up download button
+                downloadBtn.onclick = () => {
+                    const link = document.createElement('a');
+                    link.download = 'composed-image.png';
+                    link.href = resultImageData;
+                    link.click();
+                };
+                
+                // Set up share button (if Web Share API is available)
+                if (navigator.share) {
+                    shareBtn.style.display = 'block';
+                    shareBtn.onclick = async () => {
+                        try {
+                            // Convert data URL to Blob
+                            const response = await fetch(resultImageData);
+                            const blob = await response.blob();
+                            
+                            // Share the image
+                            await navigator.share({
+                                title: 'My Composed Image',
+                                files: [new File([blob], 'composed-image.png', { type: 'image/png' })]
+                            });
+                        } catch (err) {
+                            console.error('Error sharing:', err);
+                            alert('Could not share the image');
+                        }
+                    };
+                } else {
+                    shareBtn.style.display = 'none';
+                }
+                
+                hideLoading();
+            });
+        }, 1000);
+    }
+    
+    // Reset the app
+    function resetApp() {
+        currentImageIndex = 0;
+        capturedImages.length = 0;
+        
+        // Reset preview boxes
+        document.querySelectorAll('.preview-box').forEach((box, index) => {
+            box.style.backgroundImage = 'none';
+            
+            // Show placeholders again
+            const placeholder = box.querySelector('.preview-placeholder');
+            if (placeholder) {
+                placeholder.style.display = 'flex';
+            }
+        });
+        
+        // Reset UI
+        updateUI();
+    }
+    
+    // Show loading screen
+    function showLoading() {
+        loadingScreen.style.display = 'flex';
+    }
+    
+    // Hide loading screen
+    function hideLoading() {
+        loadingScreen.style.display = 'none';
+    }
+    
+    // Check device orientation and show message if needed
+    function checkOrientation() {
+        const orientationMessage = document.getElementById('orientation-message');
+        
+        if (window.innerWidth < 768 && window.innerHeight < window.innerWidth) {
+            orientationMessage.style.display = 'flex';
+        } else {
+            orientationMessage.style.display = 'none';
+        }
+    }
+    
+    // Event listeners
+    captureBtn.addEventListener('click', captureImage);
+    resetBtn.addEventListener('click', resetApp);
+    combineBtn.addEventListener('click', combineImages);
+    switchCameraBtn.addEventListener('click', switchCamera);
+    backBtn.addEventListener('click', () => {
+        resultSection.classList.add('hidden');
+        previewSection.classList.remove('hidden');
+    });
+    
+    // Toggle settings panel
+    settingsBtn.addEventListener('click', () => {
+        cameraSettingsPanel.classList.toggle('hidden');
+    });
+    
+    // Update composition in real-time when changing styles
+    compositionStyle.addEventListener('change', () => {
+        if (capturedImages.length === maxImages) {
+            combineImages();
+        }
+    });
+    
+    // Update composition when border settings change
+    borderWidth.addEventListener('input', () => {
+        if (capturedImages.length === maxImages) {
+            combineImages();
+        }
+    });
+    
+    borderColor.addEventListener('input', () => {
+        if (capturedImages.length === maxImages) {
+            combineImages();
+        }
+    });
+    
+    // Check orientation when resizing
+    window.addEventListener('resize', checkOrientation);
+    
+    // Initialize
+    init();
+    checkOrientation();
+});
