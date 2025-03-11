@@ -3,45 +3,149 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>4-Image Camera Composer</title>
+    <title>Advanced 4-Image Composer</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
-        <h1>4-Image Camera Composer</h1>
+    <div class="app-container">
+        <header>
+            <h1><i class="fas fa-camera"></i> Advanced Image Composer</h1>
+        </header>
         
-        <div id="camera-container">
-            <video id="camera" autoplay playsinline></video>
-            <div id="guide-overlay">
-                <div class="guide-text">Position 1: Top Left</div>
+        <div id="loading-screen">
+            <div class="spinner"></div>
+            <p>Processing...</p>
+        </div>
+
+        <main>
+            <div id="camera-view">
+                <div id="camera-container">
+                    <video id="camera" autoplay playsinline></video>
+                    
+                    <div id="guide-overlay">
+                        <div class="overlay-grid">
+                            <div class="target-area"></div>
+                        </div>
+                        <div class="guide-instructions">
+                            <div class="guide-text">Position 1: Top Left</div>
+                            <div class="guide-details">Align object within the target area</div>
+                        </div>
+                    </div>
+                    
+                    <canvas id="canvas" style="display: none;"></canvas>
+                    
+                    <div id="capture-indicators">
+                        <div class="indicator" id="indicator-1">1</div>
+                        <div class="indicator" id="indicator-2">2</div>
+                        <div class="indicator" id="indicator-3">3</div>
+                        <div class="indicator" id="indicator-4">4</div>
+                    </div>
+                </div>
+                
+                <div class="camera-controls">
+                    <button id="switch-camera-btn" class="round-btn" title="Switch Camera">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                    <button id="capture-btn" class="capture-btn" title="Capture Image">
+                        <i class="fas fa-camera"></i>
+                    </button>
+                    <button id="settings-btn" class="round-btn" title="Camera Settings">
+                        <i class="fas fa-sliders-h"></i>
+                    </button>
+                </div>
+                
+                <div id="camera-settings-panel" class="hidden">
+                    <div class="setting-group">
+                        <label for="brightness">Brightness</label>
+                        <input type="range" id="brightness" min="-100" max="100" value="0">
+                    </div>
+                    <div class="setting-group">
+                        <label for="contrast">Contrast</label>
+                        <input type="range" id="contrast" min="-100" max="100" value="0">
+                    </div>
+                    <div class="setting-group">
+                        <label for="saturation">Saturation</label>
+                        <input type="range" id="saturation" min="-100" max="100" value="0">
+                    </div>
+                    <div class="setting-group">
+                        <label>Filter:</label>
+                        <div class="filter-options">
+                            <button class="filter-btn active" data-filter="none">None</button>
+                            <button class="filter-btn" data-filter="grayscale">B&W</button>
+                            <button class="filter-btn" data-filter="sepia">Sepia</button>
+                            <button class="filter-btn" data-filter="vintage">Vintage</button>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <canvas id="canvas" style="display: none;"></canvas>
             
-            <div id="capture-indicators">
-                <div class="indicator" id="indicator-1"></div>
-                <div class="indicator" id="indicator-2"></div>
-                <div class="indicator" id="indicator-3"></div>
-                <div class="indicator" id="indicator-4"></div>
+            <div id="preview-section">
+                <h2>Captured Images</h2>
+                <div id="preview-container">
+                    <div class="preview-box" id="preview-1">
+                        <div class="preview-placeholder">1</div>
+                    </div>
+                    <div class="preview-box" id="preview-2">
+                        <div class="preview-placeholder">2</div>
+                    </div>
+                    <div class="preview-box" id="preview-3">
+                        <div class="preview-placeholder">3</div>
+                    </div>
+                    <div class="preview-box" id="preview-4">
+                        <div class="preview-placeholder">4</div>
+                    </div>
+                </div>
+                
+                <div class="action-buttons">
+                    <button id="reset-btn" class="secondary-btn">
+                        <i class="fas fa-redo"></i> Reset
+                    </button>
+                    <button id="combine-btn" class="primary-btn" disabled>
+                        <i class="fas fa-object-group"></i> Combine Images
+                    </button>
+                </div>
             </div>
-        </div>
+            
+            <div id="result-section" class="hidden">
+                <h2>Final Composition</h2>
+                
+                <div class="composition-controls">
+                    <select id="composition-style">
+                        <option value="grid">2x2 Grid</option>
+                        <option value="horizontal">Horizontal Strip</option>
+                        <option value="vertical">Vertical Strip</option>
+                        <option value="collage">Collage</option>
+                    </select>
+                    
+                    <div class="border-control">
+                        <label for="border-width">Border:</label>
+                        <input type="range" id="border-width" min="0" max="20" value="4">
+                        <input type="color" id="border-color" value="#ffffff">
+                    </div>
+                </div>
+                
+                <div id="final-image-container">
+                    <div id="final-image"></div>
+                </div>
+                
+                <div class="action-buttons">
+                    <button id="back-btn" class="secondary-btn">
+                        <i class="fas fa-arrow-left"></i> Back
+                    </button>
+                    <button id="download-btn" class="primary-btn">
+                        <i class="fas fa-download"></i> Download
+                    </button>
+                    <button id="share-btn" class="primary-btn">
+                        <i class="fas fa-share-alt"></i> Share
+                    </button>
+                </div>
+            </div>
+        </main>
         
-        <div class="controls">
-            <button id="capture-btn">Capture</button>
-            <button id="reset-btn">Reset</button>
-            <button id="combine-btn" disabled>Combine Images</button>
-        </div>
-        
-        <div id="preview-container">
-            <div class="preview-box" id="preview-1"></div>
-            <div class="preview-box" id="preview-2"></div>
-            <div class="preview-box" id="preview-3"></div>
-            <div class="preview-box" id="preview-4"></div>
-        </div>
-        
-        <div id="result-container">
-            <h2>Final Composition</h2>
-            <div id="final-image"></div>
-            <button id="download-btn" style="display: none;">Download Image</button>
+        <div id="orientation-message">
+            <p>Please rotate your device for a better experience</p>
+            <i class="fas fa-sync-alt fa-spin"></i>
         </div>
     </div>
     
